@@ -1,3 +1,4 @@
+import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -49,6 +50,7 @@ public class Student extends JFrame{
 		add(reset_stud);
 		
 		setLayout(new FlowLayout());
+		setTitle("Student Details");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(270,350);
 		setVisible(true);
