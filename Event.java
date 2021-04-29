@@ -55,44 +55,39 @@ class Event extends JFrame implements ActionListener{
 	setVisible(true);
 	setSize(290,350);
 	setLayout(new FlowLayout());
-        setTitle("Event Details");
+    setTitle("Event Details");
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-  public void actionPerformed(ActionEvent e)
-  {
-   Connection con=null;
+  public void actionPerformed(ActionEvent e){
+	Connection conn = null;
 	
-	if(e.getSource()==add_event)
-	{
-	try
-	{
-		Class.forName("com.mysql.jdbc.Driver");//driver name
-        con=DriverManager.getConnection("jdbc:mysql://localhost/seminar","root","");//url, username, password
-		//JOptionPane.showMessageDialog(this,"Connection ok...");
-		String ename = ename_text.getText();
-		String edate = edate_text.getText();
-		String evenue = evenue_text.getText();
-		String eduration = eduration_text.getText();
-		int dur = Integer.parseInt(eduration);
-		//System.out.println(ename);
-		//System.out.println(edate);
-		//System.out.println(evenue);
-		//System.out.println(dur);
-		Date dt=Date.valueOf(edate);
-		System.out.println(dt);
-		PreparedStatement st = con.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration) VALUES (?,?,?,?)");
-		st.setString(1,ename);
-		st.setString(2,evenue);
-		st.setDate(3,dt);
-		st.setInt(4,dur);
-		int x=st.executeUpdate();
-		if(x>0) 
-		JOptionPane.showMessageDialog(this,"Event Generated ...");
-	}catch(Exception q)
-	{
-	JOptionPane.showMessageDialog(this,"Exception Here...");
-	}
-	
+	if(e.getSource() == add_event){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");//driver name
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar","root","");//url, username, password
+			//JOptionPane.showMessageDialog(this,"Connection ok...");
+			String ename = ename_text.getText();
+			String edate = edate_text.getText();
+			String evenue = evenue_text.getText();
+			String eduration = eduration_text.getText();
+			int dur = Integer.parseInt(eduration);
+			//System.out.println(ename);
+			//System.out.println(edate);
+			//System.out.println(evenue);
+			//System.out.println(dur);
+			Date dt=Date.valueOf(edate);
+			System.out.println(dt);
+			PreparedStatement st = conn.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration) VALUES (?,?,?,?)");
+			st.setString(1,ename);
+			st.setString(2,evenue);
+			st.setDate(3,dt);
+			st.setInt(4,dur);
+			int x=st.executeUpdate();
+			if(x>0) 
+				JOptionPane.showMessageDialog(this,"Event Added!");
+		}catch(Exception q){
+			JOptionPane.showMessageDialog(this,"Exception Here...");
+		}
 	}  
   }
   public static void main(String args[]){
