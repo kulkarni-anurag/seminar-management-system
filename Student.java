@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
-public class Student extends JFrame implements ActionListener{
+class Student extends JFrame implements ActionListener{
 	Font head;
 	JLabel header, name_label, grno_label, branch_label, year_label;
 	JTextField name_text, grno_text;
@@ -24,7 +24,7 @@ public class Student extends JFrame implements ActionListener{
 		name_text = new JTextField(20);
 		grno_text = new JTextField(20);
 		
-		String []branches = {"Computer","IT","Instrumentation","Chemical", "Mechanical", "Indus&Prod"};
+		String []branches = {"Computer","IT","Instrumentation","Mechanical"};
 		String []years = {"FY", "SY", "TY", "B.Tech"};
 		
 		branch_select = new JComboBox<>(branches);
@@ -34,16 +34,22 @@ public class Student extends JFrame implements ActionListener{
 		reset_stud = new JButton("Reset");
 		
 		add(header);
+		
 		add(name_label);
 		add(name_text);
+		
 		add(grno_label);
 		add(grno_text);
+		
 		add(branch_label);
 		add(branch_select);	
+		
 		add(year_label);
 		add(year_select);
+		
 		add(add_stud);
 		add_stud.addActionListener(this);
+		
 		add(reset_stud);
 		reset_stud.addActionListener(this);
 		
