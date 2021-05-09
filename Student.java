@@ -16,21 +16,23 @@ class Student extends JFrame implements ActionListener{
 		
 		header = new JLabel("Student Details");
 		header.setFont(head);
-		name_label = new JLabel("Name of Student:");
-		grno_label = new JLabel("Gr. No. of Student:");
-		branch_label = new JLabel("Select Branch:");
-		year_label = new JLabel("Select Year:");
 		
+		name_label = new JLabel("Name of Student:");
 		name_text = new JTextField(20);
+		
+		grno_label = new JLabel("Gr. No. of Student:");
 		grno_text = new JTextField(20);
 		
+		branch_label = new JLabel("Select Branch:");
 		String []branches = {"Computer","IT","Instrumentation","Mechanical"};
-		String []years = {"FY", "SY", "TY", "B.Tech"};
-		
 		branch_select = new JComboBox<>(branches);
+		
+		year_label = new JLabel("Select Year:");
+		String []years = {"FY", "SY", "TY", "B.Tech"};
 		year_select = new JComboBox<>(years);
 		
 		add_stud = new JButton("Add Student");
+		
 		reset_stud = new JButton("Reset");
 		
 		add(header);
