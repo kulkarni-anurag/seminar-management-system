@@ -80,8 +80,8 @@ class Event extends JFrame implements ActionListener{
 			st.setString(2,evenue);
 			st.setDate(3,dt);
 			st.setInt(4,dur);
-			int x=st.executeUpdate();
-			if(x>0){
+			int x = st.executeUpdate();
+			if(x > 0){
 				JOptionPane.showMessageDialog(this,"Event Added!");
 			}
 		}catch(Exception q){

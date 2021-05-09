@@ -1,4 +1,3 @@
-import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.*;
@@ -25,26 +24,24 @@ class Guest extends JFrame implements ActionListener{
 			Statement st=conn.createStatement();
 			ResultSet rs=st.executeQuery("Select * from event");
 			
-	thead = new Font("Times New Roman", Font.BOLD, 30);
+			thead = new Font("Times New Roman", Font.BOLD, 30);
 	
-    head = new JLabel("Guest's Details");
-	head.setFont(thead);
+			head = new JLabel("Guest's Details");
+			head.setFont(thead);
 	
-    gname_label = new JLabel("Enter Guest's Name:");
-    ggender_label = new JLabel("Enter Guest's Gender:");
-    gexpert_label = new JLabel("Enter Guest's Expertise:");
-    gcompany_label = new JLabel("Enter Guest's Company:");
-    gphoto_label = new JLabel("Upload Guest's Photo:");
-	gevent_label = new JLabel("Select Event:");
-	int i=0;
-	ArrayList <String>arr=new ArrayList<String>();
-	while(rs.next())
-	{
-	arr.add(rs.getString(2));
-	i++;
-	}
-	System.out.println(arr);
-	//{"Test1", "Test2", "Test3", "Test4"};
+			gname_label = new JLabel("Enter Guest's Name:");
+			ggender_label = new JLabel("Enter Guest's Gender:");
+			gexpert_label = new JLabel("Enter Guest's Expertise:");
+			gcompany_label = new JLabel("Enter Guest's Company:");
+			gphoto_label = new JLabel("Upload Guest's Photo:");
+			gevent_label = new JLabel("Select Event:");
+			int i=0;
+			ArrayList <String>arr=new ArrayList<String>();
+			while(rs.next()){
+				arr.add(rs.getString(2));
+				i++;
+			}
+			System.out.println(arr);
    
     male = new JRadioButton("Male");
     female = new JRadioButton("Female");
@@ -90,7 +87,9 @@ class Guest extends JFrame implements ActionListener{
 	add_guest.addActionListener(this);
     add(add_guest);
     add(reset);
-	}catch(Exception ee){System.out.println(ee);}
+	} catch(Exception ee){
+		System.out.println(ee);
+	}
 	setVisible(true);
 	setSize(300,350);
 	setLayout(new FlowLayout());
@@ -103,15 +102,14 @@ class Guest extends JFrame implements ActionListener{
 	  {
 		  try
 		  {
-			  
-		  
 		  String  gen=null;
 		  if(male.isSelected())
 		  gen="Male";
 		  else
 		  gen="Female";
-		  }catch(){}
-		  System.out.println(gen);
+		  } catch(Exception eee){
+				System.out.println(eee);
+			}
 	  }
   }
   public static void main(String args[]){

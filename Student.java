@@ -58,25 +58,39 @@ public class Student extends JFrame implements ActionListener{
 		Connection conn = null;
 		
 		if(e.getSource() == add_stud){
-			//JOptionPane.showMessageDialog(this, "Add Student Clicked!");
 			try{
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar", "root", "");
 				String sname = name_text.getText();
 				String sgrno = grno_text.getText();
+				int grno = Integer.parseInt(sgrno);
 				String sbranch = (String)branch_select.getSelectedItem();
 				String syear = (String)year_select.getSelectedItem();
-				System.out.println(sname);
-				System.out.println(sgrno);
-				System.out.println(sbranch);
-				System.out.println(syear);
+				//System.out.println(sname);
+				//System.out.println(sgrno);
+				//System.out.println(sbranch);
+				//System.out.println(syear);
+				
+				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, sbranch, syear) VALUES (?,?,?,?)");
+				st.setInt(1, grno);
+				st.setString(2, sname);
+				st.setString(3, sbranch);
+				st.setString(4, syear);
+				
+				int x = st.executeUpdate();
+				if(x > 0){
+					JOptionPane.showMessageDialog(this,"Student Added!");
+				}
+				
 			} catch (Exception q){
 				JOptionPane.showMessageDialog(this,"Exception Here...");
 			}
 		}
 		
 		if(e.getSource() == reset_stud){
-			JOptionPane.showMessageDialog(this, "Reseting Student Data!");
+			//JOptionPane.showMessageDialog(this, "Reseting Student Data!");
+			name_text.setText("");
+			grno_text.setText("");
 		}
 	}
 	
