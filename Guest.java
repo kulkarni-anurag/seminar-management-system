@@ -117,6 +117,7 @@ class Guest extends JFrame implements ActionListener{
 			String gexpert = gexpert_text.getText();
 			String gcompany = gcompany_text.getText();
 			String gevent = (String)event_combo.getSelectedItem();
+			//System.out.println(gevent);
 			String gen = null;
 			if(male.isSelected()){
 				gen="Male";
@@ -125,13 +126,21 @@ class Guest extends JFrame implements ActionListener{
 			}
 			
 			try{
+				Statement st2 = conn.createStatement();
+				
+				ResultSet rs2 = st2.executeQuery("SELECT eid FROM `event` WHERE ename = '"+ gevent +"'");
+				//System.out.println(rs2);
+				int geventid = 0;
+				while(rs2.next()){
+					geventid = rs2.getInt(1);
+				}
 				
 				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO guest(gname, ggender, gexpert, gcompany, event) VALUES (?,?,?,?,?)");
 				pst1.setString(1, gname);
 				pst1.setString(2, gen);
 				pst1.setString(3, gexpert);
 				pst1.setString(4, gcompany);
-				pst1.setString(5, gevent);
+				pst1.setInt(5, geventid);
 				
 				int exe = pst1.executeUpdate();
 				if(exe > 0){

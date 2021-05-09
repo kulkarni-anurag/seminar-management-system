@@ -24,8 +24,6 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			Statement st = conn.createStatement();
 			ResultSet rs1 = st.executeQuery("SELECT * FROM event");
 			
-			Statement st3 = conn.createStatement();
-			
 			ArrayList<String> addEvent = new ArrayList<String>();
 			
 			while(rs1.next()){
@@ -42,7 +40,17 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 				i++;
 			}
 			
-			ResultSet rs3 = st3.executeQuery("SELECT r.grno FROM registration r, student s WHERE r.grno = s.gr_no AND s.sbranch = 'Computer' AND s.syear = 'FY' AND r.event = '"+ events[0] +"'");
+			Statement st5 = conn.createStatement();
+				
+			ResultSet rs5 = st5.executeQuery("SELECT eid FROM `event` WHERE ename = '"+ events[0] +"'");
+			int aeventid = 0;
+			while(rs5.next()){
+				aeventid = rs5.getInt(1);
+			}
+			
+			Statement st3 = conn.createStatement();
+			
+			ResultSet rs3 = st3.executeQuery("SELECT r.grno FROM registration r, student s, event e WHERE r.grno = s.gr_no AND s.sbranch = 'Computer' AND s.syear = 'FY' AND e.eid = '"+ aeventid +"'");
 			
 			ArrayList<String> addNewGr = new ArrayList<String>();
 			
@@ -120,6 +128,7 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			String sgrno = (String)grno_select.getSelectedItem();
 			int newsgrno = Integer.parseInt(sgrno);
 			try{
+				
 				PreparedStatement pst1 = conn.prepareStatement("UPDATE registration SET attendance = '1' WHERE grno = ?");
 				pst1.setInt(1, newsgrno);
 				
@@ -137,6 +146,7 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			String sgrno = (String)grno_select.getSelectedItem();
 			int newsgrno = Integer.parseInt(sgrno);
 			try{
+				
 				PreparedStatement pst1 = conn.prepareStatement("UPDATE registration SET attendance = '0' WHERE grno = ?");
 				pst1.setInt(1, newsgrno);
 				
@@ -162,8 +172,16 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			
 			try{
 				
+				Statement st4 = conn.createStatement();
+				
+				ResultSet rs4 = st4.executeQuery("SELECT eid FROM `event` WHERE ename = '"+ aevent +"'");
+				int geventid = 0;
+				while(rs4.next()){
+					geventid = rs4.getInt(1);
+				}
+				
 				Statement st1 = conn.createStatement();
-				ResultSet rs2 = st1.executeQuery("SELECT r.grno FROM registration r, student s WHERE r.grno = s.gr_no AND s.sbranch = '"+ branch +"' AND s.syear = '"+ year +"' AND r.event = '"+ aevent +"'");
+				ResultSet rs2 = st1.executeQuery("SELECT r.grno FROM registration r, student s, event e WHERE r.grno = s.gr_no AND s.sbranch = '"+ branch +"' AND s.syear = '"+ year +"' AND e.eid = '"+ geventid +"'");
 				
 				grno_select.removeAllItems();
 				int k = 0;

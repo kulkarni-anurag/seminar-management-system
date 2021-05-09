@@ -112,10 +112,20 @@ class Registration extends JFrame implements ActionListener, ItemListener{
 			String seminar = (String)event_select.getSelectedItem();
 			String sgrno = (String)grno_select.getSelectedItem();
 			int newsgrno = Integer.parseInt(sgrno);
+			
 			try{
+				
+				Statement st4 = conn.createStatement();
+				
+				ResultSet rs4 = st4.executeQuery("SELECT eid FROM `event` WHERE ename = '"+ seminar +"'");
+				int geventid = 0;
+				while(rs4.next()){
+					geventid = rs4.getInt(1);
+				}
+				
 				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO registration(grno, event) VALUES (?,?)");
 				pst1.setInt(1, newsgrno);
-				pst1.setString(2, seminar);
+				pst1.setInt(2, geventid);
 				
 				int exe = pst1.executeUpdate();
 				if(exe > 0){

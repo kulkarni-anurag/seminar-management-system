@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+# Menu Page
+Seminar.java
+
 # Log file
 *.log
 
