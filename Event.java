@@ -1,4 +1,3 @@
-import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.*;
@@ -6,12 +5,9 @@ import java.awt.event.*;
 
 class Event extends JFrame implements ActionListener{
   Font thead;
-  //UtilDateModel model;
-  //JDatePanelImpl datePanel;
-  //JDatePickerImpl datePicker;
   JLabel header, ename_label, evenue_label, edate_label, eduration_label;
   JTextField ename_text, evenue_text, edate_text, eduration_text;
-  JButton add_event, reset;
+  JButton add_event, reset, select_date;
   
   public Event(){
 	
@@ -20,38 +16,38 @@ class Event extends JFrame implements ActionListener{
 	header = new JLabel("Event Details");
 	header.setFont(thead);
 	
-	//model = new UtilDateModel();
-	//datePanel = new JDatePanelImpl(model);
-	//datePicker = new JDatePickerImpl(datePanel);
-	
 	ename_label = new JLabel("Enter Event Name:");
 	evenue_label = new JLabel("Enter Event Venue:");
 	edate_label = new JLabel("Enter Event Date:");
-	eduration_label = new JLabel("Enter Event Duration:");
+	eduration_label = new JLabel("Enter Event Duration: (in Hours)");
 	
 	ename_text = new JTextField(20);
 	evenue_text = new JTextField(20);
 	edate_text = new JTextField(20);
 	eduration_text = new JTextField(20);
 	
+	select_date = new JButton("Select Event Date");
 	add_event = new JButton("Add Event");
 	reset = new JButton("Reset");
+	
+	select_date.addActionListener(this);
 	add_event.addActionListener(this);
 	reset.addActionListener(this);
+	
 	add(header);
 	add(ename_label);
 	add(ename_text);
 	add(evenue_label);
 	add(evenue_text);
 	add(edate_label);
+	add(select_date);
 	add(edate_text);
-	//add(datePicker);
+	
 	add(eduration_label);
 	add(eduration_text);
 	
 	add(add_event);
 	add(reset);
-	
 	setVisible(true);
 	setSize(290,350);
 	setLayout(new FlowLayout());
@@ -60,6 +56,11 @@ class Event extends JFrame implements ActionListener{
   }
   public void actionPerformed(ActionEvent e){
 	Connection conn = null;
+	
+	if(e.getSource() == select_date){
+		//System.out.println("Calling DatePicker");
+		edate_text.setText(new DatePicker(this).setPickedDate());
+	}
 	
 	if(e.getSource() == add_event){
 		try{
@@ -71,24 +72,29 @@ class Event extends JFrame implements ActionListener{
 			String evenue = evenue_text.getText();
 			String eduration = eduration_text.getText();
 			int dur = Integer.parseInt(eduration);
-			//System.out.println(ename);
-			//System.out.println(edate);
-			//System.out.println(evenue);
-			//System.out.println(dur);
+			
 			Date dt=Date.valueOf(edate);
-			System.out.println(dt);
+			//System.out.println(dt);
 			PreparedStatement st = conn.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration) VALUES (?,?,?,?)");
 			st.setString(1,ename);
 			st.setString(2,evenue);
 			st.setDate(3,dt);
 			st.setInt(4,dur);
 			int x=st.executeUpdate();
-			if(x>0) 
+			if(x>0){
 				JOptionPane.showMessageDialog(this,"Event Added!");
+			}
 		}catch(Exception q){
 			JOptionPane.showMessageDialog(this,"Exception Here...");
+			System.out.println(q);
 		}
-	}  
+	}
+	if(e.getSource () == reset){
+		ename_text.setText("");
+		edate_text.setText("");
+		evenue_text.setText("");
+		eduration_text.setText("");
+	}
   }
   public static void main(String args[]){
 	new Event();  
