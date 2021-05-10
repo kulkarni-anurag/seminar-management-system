@@ -10,11 +10,19 @@ class StudentFind extends JFrame implements ActionListener{
 	JLabel header, name_label, grno_label, branch_label, year_label, image_label;
 	JTextField name_text, grno_text;
 	JComboBox<String> branch_select, year_select;
-	JButton search_student, add_stud, reset_stud, insert_photo;
+	JButton search_student, update_stud, reset_stud, insert_photo;
 	FileDialog fd;
 	File f;
+	Connection conn;
 	
 	public StudentFind(){
+		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar", "root", "");
+		} catch (Exception error5){
+			System.out.println(error5);
+		}
 		
 		head = new Font("Times New Roman", Font.BOLD, 30);
 		
@@ -37,7 +45,7 @@ class StudentFind extends JFrame implements ActionListener{
 		
 		search_student = new JButton("Search Student");
 		
-		add_stud = new JButton("Update Student");
+		update_stud = new JButton("Update Student");
 		
 		reset_stud = new JButton("Reset");
 		
@@ -62,8 +70,8 @@ class StudentFind extends JFrame implements ActionListener{
 		add(search_student);
 		search_student.addActionListener(this);
 		
-		add(add_stud);
-		add_stud.addActionListener(this);
+		add(update_stud);
+		update_stud.addActionListener(this);
 		
 		add(reset_stud);
 		reset_stud.addActionListener(this);
@@ -81,25 +89,37 @@ class StudentFind extends JFrame implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e){
-		Connection conn = null;
 		
 		if(e.getSource() == search_student){
 			String sgrnos = grno_text.getText();
+			//System.out.println(sgrnos);
 			int igrnoi = Integer.parseInt(sgrnos);
-			System.out.println(igrnoi);
+			//System.out.println(igrnoi);
 			
 			try{
 				PreparedStatement pst7 = conn.prepareStatement("SELECT * FROM student WHERE gr_no = ?");
 				pst7.setInt(1, igrnoi);
 				
 				ResultSet st7 = pst7.executeQuery();
-				
-				System.out.println(st7);
-				
+				//System.out.println("query ok");
 				if(st7.next()){
 					
 					grno_text.setText(st7.getString(1));
 					name_text.setText(st7.getString(2));
+					String sbranchs = st7.getString(3);
+					for(int m=0; m < branch_select.getItemCount(); m++){
+						if(sbranchs.equals(branch_select.getItemAt(m))){
+							branch_select.setSelectedIndex(m);
+							break;
+						}
+					}
+					String syears = st7.getString(4);
+					for(int n=0; n < year_select.getItemCount(); n++){
+						if(syears.equals(year_select.getItemAt(n))){
+							year_select.setSelectedIndex(n);
+							break;
+						}
+					}
 					Blob b = st7.getBlob(5);
 					ImageIcon i = new ImageIcon(b.getBytes(1,(int)b.length()));
 					image_label.setIcon(i);
@@ -116,10 +136,8 @@ class StudentFind extends JFrame implements ActionListener{
 			}
 		}
 		
-		if(e.getSource() == add_stud){
+		if(e.getSource() == update_stud){
 			try{
-				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar", "root", "");
 				String sname = name_text.getText();
 				String sgrno = grno_text.getText();
 				int grno = Integer.parseInt(sgrno);
@@ -127,16 +145,16 @@ class StudentFind extends JFrame implements ActionListener{
 				String syear = (String)year_select.getSelectedItem();
 				FileInputStream sphoto = new FileInputStream(f);
 				
-				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, sbranch, syear, sphoto) VALUES (?,?,?,?,?)");
-				st.setInt(1, grno);
-				st.setString(2, sname);
-				st.setString(3, sbranch);
-				st.setString(4, syear);
-				st.setBinaryStream(5, (InputStream)sphoto, (long)f.length());
+				PreparedStatement st = conn.prepareStatement("UPDATE student SET sname = ?, sbranch = ?, syear =? , sphoto = ? WHERE gr_no = ?");
+				st.setString(1, sname);
+				st.setString(2, sbranch);
+				st.setString(3, syear);
+				st.setBinaryStream(4, (InputStream)sphoto, (long)f.length());
+				st.setInt(5, grno);
 				
 				int x = st.executeUpdate();
 				if(x > 0){
-					JOptionPane.showMessageDialog(this,"Student Added!");
+					JOptionPane.showMessageDialog(this,"Student Updated!");
 				}
 				
 			} catch (Exception q){
@@ -148,6 +166,7 @@ class StudentFind extends JFrame implements ActionListener{
 			//JOptionPane.showMessageDialog(this, "Reseting Student Data!");
 			name_text.setText("");
 			grno_text.setText("");
+			image_label.setText("");
 		}
 		
 		if(e.getSource() == insert_photo){
