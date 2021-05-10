@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -7,11 +8,13 @@ import java.awt.event.*;
 class Guest extends JFrame implements ActionListener{
 	
 	Font thead;
-	JLabel head, gname_label, ggender_label, gexpert_label, gcompany_label, gphoto_label, gevent_label;
+	JLabel head, gname_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
 	JTextField gname_text, gexpert_text, gcompany_text;
 	JComboBox<String> event_combo;
 	JRadioButton male, female;
-	JButton add_guest, reset;
+	JButton add_guest, reset, insert_photo;
+	FileDialog fd;
+	File f;
 	
 	Connection conn;
 	String events[];
@@ -64,14 +67,17 @@ class Guest extends JFrame implements ActionListener{
 		gcompany_label = new JLabel("Enter Guest's Company:");
 		gcompany_text = new JTextField(20);
 		
-		gphoto_label = new JLabel("Upload Guest's Photo:");
-		
 		
 		gevent_label = new JLabel("Select Event:");
 		event_combo = new JComboBox<>(events);
 		
 		add_guest = new JButton("Add Guest");
+		
 		reset = new JButton("Reset Data");
+		
+		insert_photo = new JButton("Insert Photo");
+		
+		image_label = new JLabel();
 	   
 		add(head);
 	   
@@ -102,8 +108,13 @@ class Guest extends JFrame implements ActionListener{
 		add(reset);
 		reset.addActionListener(this);
 		
+		add(insert_photo);
+		insert_photo.addActionListener(this);
+		
+		add(image_label);
+		
 		setVisible(true);
-		setSize(300,350);
+		setSize(300,650);
 		setLayout(new FlowLayout());
 		setTitle("Guest Details");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,6 +137,8 @@ class Guest extends JFrame implements ActionListener{
 			}
 			
 			try{
+				FileInputStream gphoto = new FileInputStream(f);
+				
 				Statement st2 = conn.createStatement();
 				
 				ResultSet rs2 = st2.executeQuery("SELECT eid FROM `event` WHERE ename = '"+ gevent +"'");
@@ -135,12 +148,13 @@ class Guest extends JFrame implements ActionListener{
 					geventid = rs2.getInt(1);
 				}
 				
-				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO guest(gname, ggender, gexpert, gcompany, event) VALUES (?,?,?,?,?)");
+				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO guest(gname, ggender, gexpert, gcompany, event, gphoto) VALUES (?,?,?,?,?,?)");
 				pst1.setString(1, gname);
 				pst1.setString(2, gen);
 				pst1.setString(3, gexpert);
 				pst1.setString(4, gcompany);
 				pst1.setInt(5, geventid);
+				pst1.setBinaryStream(6, (InputStream)gphoto, (long)f.length());
 				
 				int exe = pst1.executeUpdate();
 				if(exe > 0){
@@ -158,6 +172,16 @@ class Guest extends JFrame implements ActionListener{
 			gname_text.setText("");
 			gexpert_text.setText("");
 			gcompany_text.setText("");
+		}
+		
+		if(event.getSource() == insert_photo){
+			fd = new FileDialog(this, "Open File");
+			fd.setVisible(true);
+			
+			f = new File(fd.getDirectory()+fd.getFile());
+			
+			ImageIcon poster = new ImageIcon(fd.getDirectory()+fd.getFile());
+			image_label.setIcon(poster);
 		}
 	}
 	

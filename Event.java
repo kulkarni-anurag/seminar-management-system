@@ -1,3 +1,4 @@
+import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.*;
@@ -5,9 +6,11 @@ import java.awt.event.*;
 
 class Event extends JFrame implements ActionListener{
 	Font thead;
-	JLabel header, ename_label, evenue_label, edate_label, eduration_label;
+	JLabel header, ename_label, evenue_label, edate_label, eduration_label, image_label;
 	JTextField ename_text, evenue_text, edate_text, eduration_text;
-	JButton add_event, reset, select_date;
+	JButton add_event, reset, select_date, insert_photo;
+	FileDialog fd;
+	File f;
   
 	public Event(){
 	
@@ -33,6 +36,10 @@ class Event extends JFrame implements ActionListener{
 		
 		reset = new JButton("Reset");
 		
+		insert_photo = new JButton("Insert Photo");
+		
+		image_label = new JLabel();
+		
 		add(header);
 		
 		add(ename_label);
@@ -55,7 +62,12 @@ class Event extends JFrame implements ActionListener{
 		add(reset);
 		reset.addActionListener(this);
 		
-		setSize(290,350);
+		add(insert_photo);
+		insert_photo.addActionListener(this);
+		
+		add(image_label);
+		
+		setSize(290,650);
 		setLayout(new FlowLayout());
 		setTitle("Event Details");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,14 +92,16 @@ class Event extends JFrame implements ActionListener{
 				String evenue = evenue_text.getText();
 				String eduration = eduration_text.getText();
 				int dur = Integer.parseInt(eduration);
+				FileInputStream eposter = new FileInputStream(f);
 				
 				Date dt=Date.valueOf(edate);
 				//System.out.println(dt);
-				PreparedStatement st = conn.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration) VALUES (?,?,?,?)");
+				PreparedStatement st = conn.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration, eposter) VALUES (?,?,?,?, ?)");
 				st.setString(1,ename);
 				st.setString(2,evenue);
 				st.setDate(3,dt);
 				st.setInt(4,dur);
+				st.setBinaryStream(5,(InputStream)eposter, (long)f.length());
 				int x = st.executeUpdate();
 				if(x > 0){
 					JOptionPane.showMessageDialog(this,"Event Added!");
@@ -97,11 +111,22 @@ class Event extends JFrame implements ActionListener{
 				System.out.println(q);
 			}
 		}
-		if(e.getSource () == reset){
+		
+		if(e.getSource() == reset){
 			ename_text.setText("");
 			edate_text.setText("");
 			evenue_text.setText("");
 			eduration_text.setText("");
+		}
+		
+		if(e.getSource() == insert_photo){
+			fd = new FileDialog(this, "Open File");
+			fd.setVisible(true);
+			
+			f = new File(fd.getDirectory()+fd.getFile());
+			
+			ImageIcon poster = new ImageIcon(fd.getDirectory()+fd.getFile());
+			image_label.setIcon(poster);
 		}
 	}
 	

@@ -1,3 +1,4 @@
+import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,10 +6,12 @@ import java.sql.*;
 
 class Student extends JFrame implements ActionListener{
 	Font head;
-	JLabel header, name_label, grno_label, branch_label, year_label;
+	JLabel header, name_label, grno_label, branch_label, year_label, image_label;
 	JTextField name_text, grno_text;
 	JComboBox<String> branch_select, year_select;
-	JButton add_stud, reset_stud;
+	JButton add_stud, reset_stud, insert_photo;
+	FileDialog fd;
+	File f;
 	
 	public Student(){
 		
@@ -35,6 +38,10 @@ class Student extends JFrame implements ActionListener{
 		
 		reset_stud = new JButton("Reset");
 		
+		insert_photo = new JButton("Insert Photo");
+		
+		image_label = new JLabel();
+		
 		add(header);
 		
 		add(name_label);
@@ -55,10 +62,15 @@ class Student extends JFrame implements ActionListener{
 		add(reset_stud);
 		reset_stud.addActionListener(this);
 		
+		add(insert_photo);
+		insert_photo.addActionListener(this);
+		
+		add(image_label);
+		
 		setLayout(new FlowLayout());
 		setTitle("Student Details");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(270,350);
+		setSize(270,600);
 		setVisible(true);
 	}
 	
@@ -74,16 +86,14 @@ class Student extends JFrame implements ActionListener{
 				int grno = Integer.parseInt(sgrno);
 				String sbranch = (String)branch_select.getSelectedItem();
 				String syear = (String)year_select.getSelectedItem();
-				//System.out.println(sname);
-				//System.out.println(sgrno);
-				//System.out.println(sbranch);
-				//System.out.println(syear);
+				FileInputStream sphoto = new FileInputStream(f);
 				
-				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, sbranch, syear) VALUES (?,?,?,?)");
+				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, sbranch, syear, sphoto) VALUES (?,?,?,?,?)");
 				st.setInt(1, grno);
 				st.setString(2, sname);
 				st.setString(3, sbranch);
 				st.setString(4, syear);
+				st.setBinaryStream(5, (InputStream)sphoto, (long)f.length());
 				
 				int x = st.executeUpdate();
 				if(x > 0){
@@ -99,6 +109,16 @@ class Student extends JFrame implements ActionListener{
 			//JOptionPane.showMessageDialog(this, "Reseting Student Data!");
 			name_text.setText("");
 			grno_text.setText("");
+		}
+		
+		if(e.getSource() == insert_photo){
+			fd = new FileDialog(this, "Open File");
+			fd.setVisible(true);
+			
+			f = new File(fd.getDirectory()+fd.getFile());
+			
+			ImageIcon poster = new ImageIcon(fd.getDirectory()+fd.getFile());
+			image_label.setIcon(poster);
 		}
 	}
 	
