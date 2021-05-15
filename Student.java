@@ -69,7 +69,7 @@ class Student extends JFrame implements ActionListener{
 		
 		setLayout(new FlowLayout());
 		setTitle("Student Details");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(270,600);
 		setVisible(true);
 	}

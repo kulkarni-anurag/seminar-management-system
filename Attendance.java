@@ -118,7 +118,7 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 		
 		setLayout(new FlowLayout());
 		setTitle("Event Attendance");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(270,350);
 		setVisible(true);
 	}

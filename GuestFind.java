@@ -128,7 +128,7 @@ class GuestFind extends JFrame implements ActionListener{
 		setSize(270,650);
 		setLayout(new FlowLayout());
 		setTitle("Guest Details");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	

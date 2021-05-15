@@ -111,7 +111,7 @@ class EventFind extends JFrame implements ActionListener{
 		setSize(290,650);
 		setLayout(new FlowLayout());
 		setTitle("Event Details");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
