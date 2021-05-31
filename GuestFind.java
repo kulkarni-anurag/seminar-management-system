@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 class GuestFind extends JFrame implements ActionListener{
 	
-	Font thead;
+	Font thead,comfont;
 	JLabel head, gid_label1, gid_label2, gname_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
 	JTextField gname_text, gexpert_text, gcompany_text;
 	JComboBox<String> event_combo;
@@ -50,7 +50,7 @@ class GuestFind extends JFrame implements ActionListener{
 		}
 		
 		thead = new Font("Times New Roman", Font.BOLD, 30);
-	
+		comfont = new Font("Times New Roman", Font.BOLD, 18);	
 		head = new JLabel("Guest's Details");
 		head.setFont(thead);
 		
@@ -83,7 +83,37 @@ class GuestFind extends JFrame implements ActionListener{
 		insert_photo = new JButton("Insert Photo");
 		
 		image_label = new JLabel();
-	   
+	
+		head.setBounds(220,8,300,100);   
+		gname_label.setFont(comfont);
+		gname_text.setFont(comfont);
+		gname_label.setBounds(10,80,300,50);
+		gname_text.setBounds(10,120,300,40);
+		male.setFont(comfont);
+		female.setFont(comfont);		
+		ggender_label.setFont(comfont);
+		ggender_label.setBounds(10,170,300,40);
+		male.setBounds(10,210,100,40);
+		female.setBounds(120,210,200,40);
+		gexpert_label.setFont(comfont);
+		gexpert_text.setFont(comfont);		
+		gexpert_label.setBounds(10,260,300,40);
+		gexpert_text.setBounds(10,300,300,40);
+		gcompany_label.setFont(comfont);
+		gcompany_text.setFont(comfont);		
+		gcompany_label.setBounds(10,350,300,40);
+		gcompany_text.setBounds(10,390,300,40);
+		gevent_label.setFont(comfont);
+		event_combo.setFont(comfont);		
+		gevent_label.setBounds(10,450,100,40);
+		event_combo.setBounds(10,490,300,40);
+		search_guest.setBounds(10,560,150,40);
+		reset.setBounds(170,560,150,40);				
+		update_guest.setBounds(330,560,150,40);
+		search_guest.setFont(comfont);
+		reset.setFont(comfont);
+		update_guest.setFont(comfont);
+		image_label.setBounds(400,100,250,250);	
 		add(head);
 	   
 		add(gid_label1);
@@ -125,8 +155,8 @@ class GuestFind extends JFrame implements ActionListener{
 		add(image_label);
 		
 		setVisible(true);
-		setSize(270,650);
-		setLayout(new FlowLayout());
+		setSize(700,650);
+		setLayout(null);
 		setTitle("Guest Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

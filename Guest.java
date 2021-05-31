@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 class Guest extends JFrame implements ActionListener{
 	
-	Font thead;
+	Font thead,comfont;
 	JLabel head, gname_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
 	JTextField gname_text, gexpert_text, gcompany_text;
 	JComboBox<String> event_combo;
@@ -48,35 +48,60 @@ class Guest extends JFrame implements ActionListener{
 		} catch(Exception error1){
 			JOptionPane.showMessageDialog(this,"Error: "+error1);
 		}
-		
+		setLayout(null);
 		thead = new Font("Times New Roman", Font.BOLD, 30);
-	
+		comfont = new Font("Times New Roman", Font.BOLD, 18);
 		head = new JLabel("Guest's Details");
+		head.setBounds(220,8,300,100);
 		head.setFont(thead);
 		
 		gname_label = new JLabel("Enter Guest's Name:");
 		gname_text = new JTextField(20);
-		
-		ggender_label = new JLabel("Enter Guest's Gender:");
+		gname_label.setFont(comfont);
+		gname_text.setFont(comfont);
+		gname_label.setBounds(10,80,300,50);
+		gname_text.setBounds(10,120,300,40);
+
+		ggender_label = new JLabel("Select Guest's Gender:");
 		male = new JRadioButton("Male");
 		female = new JRadioButton("Female");
-		
+		ggender_label.setFont(comfont);
+		male.setFont(comfont);
+		female.setFont(comfont);		
+		ggender_label.setBounds(10,170,300,40);
+		male.setBounds(10,210,100,40);
+		female.setBounds(120,210,200,40);
+
 		gexpert_label = new JLabel("Enter Guest's Expertise:");
 		gexpert_text = new JTextField(20);
-		
+		gexpert_label.setFont(comfont);
+		gexpert_text.setFont(comfont);		
+		gexpert_label.setBounds(10,260,300,40);
+		gexpert_text.setBounds(10,300,300,40);
+
 		gcompany_label = new JLabel("Enter Guest's Company:");
 		gcompany_text = new JTextField(20);
-		
+		gcompany_label.setFont(comfont);
+		gcompany_text.setFont(comfont);		
+		gcompany_label.setBounds(10,350,300,40);
+		gcompany_text.setBounds(10,390,300,40);
 		
 		gevent_label = new JLabel("Select Event:");
 		event_combo = new JComboBox<>(events);
-		
+		gevent_label.setFont(comfont);
+		event_combo.setFont(comfont);		
+		gevent_label.setBounds(10,450,100,40);
+		event_combo.setBounds(10,490,300,40);
+
 		add_guest = new JButton("Add Guest");
-		
+		add_guest.setBounds(10,560,120,40);		
 		reset = new JButton("Reset Data");
-		
+		reset.setBounds(140,560,120,40);		
 		insert_photo = new JButton("Insert Photo");
-		
+		insert_photo.setBounds(270,560,140,40);
+		add_guest.setFont(comfont);
+		reset.setFont(comfont);
+		insert_photo.setFont(comfont);		
 		image_label = new JLabel();
 	   
 		add(head);
@@ -110,12 +135,12 @@ class Guest extends JFrame implements ActionListener{
 		
 		add(insert_photo);
 		insert_photo.addActionListener(this);
-		
+		image_label.setBounds(400,100,250,250);	
 		add(image_label);
 		
 		setVisible(true);
-		setSize(300,650);
-		setLayout(new FlowLayout());
+		setSize(700,700);
+
 		setTitle("Guest Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

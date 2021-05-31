@@ -5,7 +5,7 @@ import java.sql.*;
 import java.awt.event.*;
 
 class Event extends JFrame implements ActionListener{
-	Font thead;
+	Font thead,comfont;
 	JLabel header, ename_label, evenue_label, edate_label, eduration_label, image_label;
 	JTextField ename_text, evenue_text, edate_text, eduration_text;
 	JButton add_event, reset, select_date, insert_photo;
@@ -15,7 +15,7 @@ class Event extends JFrame implements ActionListener{
 	public Event(){
 	
 		thead = new Font("Times New Roman", Font.BOLD, 30);
-	
+		comfont = new Font("Times New Roman", Font.BOLD, 18);	
 		header = new JLabel("Event Details");
 		header.setFont(thead);
 	
@@ -39,7 +39,33 @@ class Event extends JFrame implements ActionListener{
 		insert_photo = new JButton("Insert Photo");
 		
 		image_label = new JLabel();
+		header.setBounds(220,8,300,100);   
+		ename_label.setFont(comfont);
+		ename_text.setFont(comfont);
+		ename_label.setBounds(10,80,300,50);
+		ename_text.setBounds(10,120,300,40);
+		evenue_label.setFont(comfont);
+		evenue_text.setFont(comfont);		
+		evenue_label.setBounds(10,170,300,40);
+		evenue_text.setBounds(10,210,300,40);
+		edate_label.setFont(comfont);
+		eduration_label.setFont(comfont);
+		edate_text.setFont(comfont);
+		eduration_text.setFont(comfont);
+		edate_label.setBounds(10,260,300,40);
+		edate_text.setBounds(10,300,300,40);
+		eduration_label.setBounds(10,360,300,40);
+		eduration_text.setBounds(10,400,300,40);
 		
+		add_event.setBounds(10,560,150,40);
+		reset.setBounds(170,560,150,40);				
+		select_date.setBounds(330,560,170,40);
+		insert_photo.setBounds(510,560,150,40);
+		add_event.setFont(comfont);
+		reset.setFont(comfont);
+		select_date.setFont(comfont);
+		insert_photo.setFont(comfont);
+		image_label.setBounds(400,100,250,250);	
 		add(header);
 		
 		add(ename_label);
@@ -67,8 +93,8 @@ class Event extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setSize(290,650);
-		setLayout(new FlowLayout());
+		setSize(700,650);
+		setLayout(null);
 		setTitle("Event Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

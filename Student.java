@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.sql.*;
 
 class Student extends JFrame implements ActionListener{
-	Font head;
+	Font head,comfont;
 	JLabel header, name_label, grno_label, branch_label, year_label, image_label;
 	JTextField name_text, grno_text;
 	JComboBox<String> branch_select, year_select;
@@ -25,7 +25,7 @@ class Student extends JFrame implements ActionListener{
 		
 		grno_label = new JLabel("Gr. No. of Student:");
 		grno_text = new JTextField(20);
-		
+		comfont = new Font("Times New Roman", Font.BOLD, 18);		
 		branch_label = new JLabel("Select Branch:");
 		String []branches = {"Computer","IT","Instrumentation","Mechanical"};
 		branch_select = new JComboBox<>(branches);
@@ -41,6 +41,31 @@ class Student extends JFrame implements ActionListener{
 		insert_photo = new JButton("Insert Photo");
 		
 		image_label = new JLabel();
+		header.setBounds(220,8,300,100);   
+		name_label.setFont(comfont);
+		name_text.setFont(comfont);
+		name_label.setBounds(10,80,300,50);
+		name_text.setBounds(10,120,300,40);
+		grno_label.setFont(comfont);
+		grno_text.setFont(comfont);		
+		grno_label.setBounds(10,170,300,40);
+		grno_text.setBounds(10,210,300,40);
+		branch_label.setFont(comfont);
+		branch_select.setFont(comfont);
+		year_label.setFont(comfont);
+		year_select.setFont(comfont);
+		branch_label.setBounds(10,260,300,40);
+		branch_select.setBounds(10,300,300,40);
+		year_label.setBounds(10,360,300,40);
+		year_select.setBounds(10,400,300,40);
+		
+		add_stud.setBounds(10,560,150,40);
+		reset_stud.setBounds(170,560,150,40);				
+		insert_photo.setBounds(330,560,150,40);
+		add_stud.setFont(comfont);
+		reset_stud.setFont(comfont);
+		insert_photo.setFont(comfont);
+		image_label.setBounds(400,160,250,250);	
 		
 		add(header);
 		
@@ -67,10 +92,10 @@ class Student extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setLayout(new FlowLayout());
+		setLayout(null);
 		setTitle("Student Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(270,600);
+		setSize(900,700);
 		setVisible(true);
 	}
 	

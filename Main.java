@@ -81,7 +81,7 @@ class Main extends JFrame implements ActionListener{
 		
 		add(header);
 		
-		setSize(650,650);
+		setSize(1400,1000);
 		setLayout(new FlowLayout());
 		setTitle("Seminar Management System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

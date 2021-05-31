@@ -7,9 +7,9 @@ import java.sql.*;
 import java.awt.event.*;
 
 class EventFind extends JFrame implements ActionListener{
-	Font thead;
+	Font thead,comfont;
 	JLabel header, ename_label, evenue_label, edate_label, eduration_label, image_label;
-	JTextField ename_text, evenue_text, edate_text, eduration_text;
+	JTextField evenue_text, edate_text, eduration_text;
 	JComboBox<String> event_combo;
 	JButton search_event, update_event, reset, select_date, insert_photo;
 	FileDialog fd;
@@ -24,7 +24,7 @@ class EventFind extends JFrame implements ActionListener{
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar", "root", "");
-			
+			comfont = new Font("Times New Roman", Font.BOLD, 18);	
 			Statement st = conn.createStatement();
 			ResultSet rs1 = st.executeQuery("SELECT * FROM event");
 			
@@ -55,7 +55,6 @@ class EventFind extends JFrame implements ActionListener{
 	
 		ename_label = new JLabel("Select Event Name:");
 		event_combo = new JComboBox<>(events);
-		ename_text = new JTextField(20);
 		
 		evenue_label = new JLabel("Event Venue:");
 		evenue_text = new JTextField(20);
@@ -76,12 +75,38 @@ class EventFind extends JFrame implements ActionListener{
 		insert_photo = new JButton("Insert Photo");
 		
 		image_label = new JLabel();
-		
+		header.setBounds(240,10,300,100);   
+		ename_label.setFont(comfont);
+		event_combo.setFont(comfont);
+		ename_label.setBounds(10,180,300,50);
+		event_combo.setBounds(310,180,300,40);
+		evenue_label.setFont(comfont);
+		evenue_text.setFont(comfont);		
+		evenue_label.setBounds(10,230,300,40);
+		evenue_text.setBounds(310,230,300,40);
+		edate_label.setFont(comfont);
+		eduration_label.setFont(comfont);
+		edate_text.setFont(comfont);
+		eduration_text.setFont(comfont);
+		edate_label.setBounds(10,280,300,40);
+		edate_text.setBounds(310,280,300,40);
+		eduration_label.setBounds(10,330,300,40);
+		eduration_text.setBounds(310,330,300,40);
+		search_event.setFont(comfont);
+		search_event.setBounds(50,400,150,40);
+		update_event.setBounds(210,400,150,40);
+		reset.setBounds(370,400,150,40);				
+		select_date.setBounds(100,450,170,40);
+		insert_photo.setBounds(280,450,150,40);
+		update_event.setFont(comfont);
+		reset.setFont(comfont);
+		select_date.setFont(comfont);
+		insert_photo.setFont(comfont);
+		image_label.setBounds(700,180,250,250);	
 		add(header);
 		
 		add(ename_label);
 		add(event_combo);
-		add(ename_text);
 		
 		add(evenue_label);
 		add(evenue_text);
@@ -108,8 +133,8 @@ class EventFind extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setSize(290,650);
-		setLayout(new FlowLayout());
+		setSize(1000,800);
+		setLayout(null);
 		setTitle("Event Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -133,8 +158,7 @@ class EventFind extends JFrame implements ActionListener{
 				ResultSet st2 = pst2.executeQuery();
 				
 				if(st2.next()){
-					ename_text.setText(st2.getString(2));
-					evenue_text.setText(st2.getString(3));
+																evenue_text.setText(st2.getString(3));
 					edate_text.setText(st2.getString(4));
 					eduration_text.setText(st2.getString(5));
 					Blob b = st2.getBlob(6);
@@ -157,7 +181,7 @@ class EventFind extends JFrame implements ActionListener{
 			try{
 				
 				String selectEvent = (String)event_combo.getSelectedItem();
-				String ename = ename_text.getText();
+				
 				String edate = edate_text.getText();
 				String evenue = evenue_text.getText();
 				String eduration = eduration_text.getText();
@@ -167,7 +191,7 @@ class EventFind extends JFrame implements ActionListener{
 				Date dt=Date.valueOf(edate);
 				//System.out.println(dt);
 				PreparedStatement st = conn.prepareStatement("UPDATE event SET ename = ?, evenue = ?, edate = ?, eduration = ?, eposter = ? WHERE ename = ?");
-				st.setString(1,ename);
+				
 				st.setString(2,evenue);
 				st.setDate(3,dt);
 				st.setInt(4,dur);
