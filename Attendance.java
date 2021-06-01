@@ -208,7 +208,7 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 				}
 				
 				Statement st1 = conn.createStatement();
-				ResultSet rs2 = st1.executeQuery("SELECT r.grno FROM registration r, student s, event e WHERE r.grno = s.gr_no AND s.sbranch = '"+ branch +"' AND s.syear = '"+ year +"' AND e.eid = '"+ geventid +"'");
+				ResultSet rs2 = st1.executeQuery("SELECT rg.grno FROM student st, registration rg WHERE st.sbranch = '"+ branch +"' AND st.syear = '"+ year +"' AND st.gr_no = rg.grno AND rg.event = '"+ geventid +"'");
 				
 				grno_select.removeAllItems();
 				int k = 0;
