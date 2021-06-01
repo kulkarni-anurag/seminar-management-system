@@ -13,6 +13,7 @@ class Event extends JFrame implements ActionListener{
 	File f;
   
 	public Event(){
+		setLayout(null);
 	
 		thead = new Font("Times New Roman", Font.BOLD, 30);
 		comfont = new Font("Times New Roman", Font.BOLD, 18);	
@@ -94,7 +95,6 @@ class Event extends JFrame implements ActionListener{
 		add(image_label);
 		
 		setSize(700,650);
-		setLayout(null);
 		setTitle("Event Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

@@ -81,7 +81,11 @@ class Main extends JFrame implements ActionListener{
 		
 		add(header);
 		
-		setSize(1400,1000);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenHeight = screenSize.height;
+		int screenWidth = screenSize.width;
+		
+		setSize(screenWidth,screenHeight);
 		setLayout(new FlowLayout());
 		setTitle("Seminar Management System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,6 +123,10 @@ class Main extends JFrame implements ActionListener{
 		
 		if(onclick.getSource() == add_attendance){
 			new Attendance();
+		}
+		
+		if(onclick.getSource() == find_registration){
+			new RegistrationList();
 		}
 	}
 	

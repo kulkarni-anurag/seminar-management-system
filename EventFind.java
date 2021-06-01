@@ -19,6 +19,7 @@ class EventFind extends JFrame implements ActionListener{
 	String events[];
   
 	public EventFind(){
+		setLayout(null);
 		
 		try{
 			
@@ -75,34 +76,39 @@ class EventFind extends JFrame implements ActionListener{
 		insert_photo = new JButton("Insert Photo");
 		
 		image_label = new JLabel();
-		header.setBounds(240,10,300,100);   
+		header.setBounds(240,10,300,100);
+		
 		ename_label.setFont(comfont);
 		event_combo.setFont(comfont);
-		ename_label.setBounds(10,180,300,50);
-		event_combo.setBounds(310,180,300,40);
+		
+		ename_label.setBounds(10,80,300,50);
+		event_combo.setBounds(10,120,300,40);
+		
 		evenue_label.setFont(comfont);
-		evenue_text.setFont(comfont);		
-		evenue_label.setBounds(10,230,300,40);
-		evenue_text.setBounds(310,230,300,40);
+		evenue_text.setFont(comfont);
+		
+		evenue_label.setBounds(10,170,300,40);
+		evenue_text.setBounds(10,210,300,40);
+		
 		edate_label.setFont(comfont);
 		eduration_label.setFont(comfont);
 		edate_text.setFont(comfont);
 		eduration_text.setFont(comfont);
-		edate_label.setBounds(10,280,300,40);
-		edate_text.setBounds(310,280,300,40);
-		eduration_label.setBounds(10,330,300,40);
-		eduration_text.setBounds(310,330,300,40);
+		edate_label.setBounds(10,260,300,40);
+		edate_text.setBounds(10,300,300,40);
+		eduration_label.setBounds(10,360,300,40);
+		eduration_text.setBounds(10,400,300,40);
 		search_event.setFont(comfont);
-		search_event.setBounds(50,400,150,40);
-		update_event.setBounds(210,400,150,40);
-		reset.setBounds(370,400,150,40);				
-		select_date.setBounds(100,450,170,40);
-		insert_photo.setBounds(280,450,150,40);
+		search_event.setBounds(10,500,150,40);
+		update_event.setBounds(10,560,150,40);
+		reset.setBounds(170,560,150,40);				
+		select_date.setBounds(330,560,170,40);
+		insert_photo.setBounds(510,560,150,40);
 		update_event.setFont(comfont);
 		reset.setFont(comfont);
 		select_date.setFont(comfont);
 		insert_photo.setFont(comfont);
-		image_label.setBounds(700,180,250,250);	
+		image_label.setBounds(400,100,250,250);	
 		add(header);
 		
 		add(ename_label);
@@ -133,8 +139,7 @@ class EventFind extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setSize(1000,800);
-		setLayout(null);
+		setSize(700,650);
 		setTitle("Event Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

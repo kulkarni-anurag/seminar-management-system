@@ -6,7 +6,7 @@ import java.sql.*;
 
 class Attendance extends JFrame implements ActionListener, ItemListener{
 	
-	Font head;
+	Font head, comfont;
 	JLabel header, event_label, branch_label, year_label, grno_label;
 	JComboBox<String> event_select, branch_select, year_select, grno_select;
 	JButton mark, unmark;
@@ -72,7 +72,10 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			JOptionPane.showMessageDialog(this,"Error: "+error);
 		}
 		
+		setLayout(null);
+		
 		head = new Font("Times New Roman", Font.BOLD, 30);
+		comfont = new Font("Times New Roman", Font.PLAIN, 18);
 		
 		header = new JLabel("Event Attendance");
 		header.setFont(head);
@@ -82,6 +85,12 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 		year_label = new JLabel("Select Year:");
 		grno_label = new JLabel("Select Gr No.:");
 		
+		event_label.setFont(comfont);
+		branch_label.setFont(comfont);
+		year_label.setFont(comfont);
+		grno_label.setFont(comfont);
+		event_label.setFont(comfont);
+		
 		String []branches = {"Computer","IT","Instrumentation","Mechanical"};
 		String []years = {"FY", "SY", "TY", "B.Tech"};
 		
@@ -90,36 +99,54 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 		event_select = new JComboBox<>(events);
 		grno_select = new JComboBox<>(grnos);
 		
+		branch_select.setFont(comfont);
+		year_select.setFont(comfont);
+		event_select.setFont(comfont);
+		grno_select.setFont(comfont);
+		branch_select.setFont(comfont);
+		
 		mark = new JButton("Mark Attendance");
 		unmark = new JButton("Unmark Attendance");
 		
+		header.setBounds(100,20,300,100);
 		add(header);
 		
+		event_label.setBounds(10,80,300,50);
 		add(event_label);
+		event_select.setBounds(10,120,300,40);
 		add(event_select);
 		event_select.addItemListener(this);
 		
+		branch_label.setBounds(10,170,300,40);
 		add(branch_label);
+		branch_select.setBounds(10,210,300,40);
 		add(branch_select);
 		branch_select.addItemListener(this);
 		
+		year_label.setBounds(10,270,300,40);
 		add(year_label);
+		
+		year_select.setBounds(10,310,300,40);
 		add(year_select);
 		year_select.addItemListener(this);
 		
+		grno_label.setBounds(10,360,300,40);
 		add(grno_label);
+		
+		grno_select.setBounds(10,400,300,40);
 		add(grno_select);
 		
+		mark.setBounds(100,470,150,40);
 		add(mark);
 		mark.addActionListener(this);
 		
+		unmark.setBounds(260,470,150,40);
 		add(unmark);
 		unmark.addActionListener(this);
 		
-		setLayout(new FlowLayout());
 		setTitle("Event Attendance");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(270,350);
+		setSize(500,600);
 		setVisible(true);
 	}
 	

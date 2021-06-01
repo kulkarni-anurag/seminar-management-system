@@ -6,14 +6,15 @@ import java.sql.*;
 
 class Student extends JFrame implements ActionListener{
 	Font head,comfont;
-	JLabel header, name_label, grno_label, branch_label, year_label, image_label;
-	JTextField name_text, grno_text;
+	JLabel header, name_label, email_label, grno_label, branch_label, year_label, image_label;
+	JTextField name_text, email_text, grno_text;
 	JComboBox<String> branch_select, year_select;
 	JButton add_stud, reset_stud, insert_photo;
 	FileDialog fd;
 	File f;
 	
 	public Student(){
+		setLayout(null);
 		
 		head = new Font("Times New Roman", Font.BOLD, 30);
 		
@@ -22,6 +23,9 @@ class Student extends JFrame implements ActionListener{
 		
 		name_label = new JLabel("Name of Student:");
 		name_text = new JTextField(20);
+		
+		email_label = new JLabel("Student Email:");
+		email_text = new JTextField(20);
 		
 		grno_label = new JLabel("Gr. No. of Student:");
 		grno_text = new JTextField(20);
@@ -46,22 +50,26 @@ class Student extends JFrame implements ActionListener{
 		name_text.setFont(comfont);
 		name_label.setBounds(10,80,300,50);
 		name_text.setBounds(10,120,300,40);
+		email_label.setFont(comfont);
+		email_text.setFont(comfont);
+		email_label.setBounds(10,170,300,50);
+		email_text.setBounds(10,210,300,40);
 		grno_label.setFont(comfont);
 		grno_text.setFont(comfont);		
-		grno_label.setBounds(10,170,300,40);
-		grno_text.setBounds(10,210,300,40);
+		grno_label.setBounds(10,260,300,40);
+		grno_text.setBounds(10,300,300,40);
 		branch_label.setFont(comfont);
 		branch_select.setFont(comfont);
 		year_label.setFont(comfont);
 		year_select.setFont(comfont);
-		branch_label.setBounds(10,260,300,40);
-		branch_select.setBounds(10,300,300,40);
-		year_label.setBounds(10,360,300,40);
-		year_select.setBounds(10,400,300,40);
+		branch_label.setBounds(10,360,300,40);
+		branch_select.setBounds(10,400,300,40);
+		year_label.setBounds(10,460,300,40);
+		year_select.setBounds(10,500,300,40);
 		
-		add_stud.setBounds(10,560,150,40);
-		reset_stud.setBounds(170,560,150,40);				
-		insert_photo.setBounds(330,560,150,40);
+		add_stud.setBounds(10,570,150,40);
+		reset_stud.setBounds(170,570,150,40);				
+		insert_photo.setBounds(330,570,150,40);
 		add_stud.setFont(comfont);
 		reset_stud.setFont(comfont);
 		insert_photo.setFont(comfont);
@@ -71,6 +79,9 @@ class Student extends JFrame implements ActionListener{
 		
 		add(name_label);
 		add(name_text);
+		
+		add(email_label);
+		add(email_text);
 		
 		add(grno_label);
 		add(grno_text);
@@ -92,10 +103,9 @@ class Student extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setLayout(null);
 		setTitle("Student Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(900,700);
+		setSize(710,700);
 		setVisible(true);
 	}
 	
@@ -108,17 +118,19 @@ class Student extends JFrame implements ActionListener{
 				conn = DriverManager.getConnection("jdbc:mysql://localhost/seminar", "root", "");
 				String sname = name_text.getText();
 				String sgrno = grno_text.getText();
+				String email = email_text.getText();
 				int grno = Integer.parseInt(sgrno);
 				String sbranch = (String)branch_select.getSelectedItem();
 				String syear = (String)year_select.getSelectedItem();
 				FileInputStream sphoto = new FileInputStream(f);
 				
-				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, sbranch, syear, sphoto) VALUES (?,?,?,?,?)");
+				PreparedStatement st = conn.prepareStatement("INSERT INTO student(gr_no, sname, semail, sbranch, syear, sphoto) VALUES (?,?,?,?,?,?)");
 				st.setInt(1, grno);
 				st.setString(2, sname);
-				st.setString(3, sbranch);
-				st.setString(4, syear);
-				st.setBinaryStream(5, (InputStream)sphoto, (long)f.length());
+				st.setString(3, email);
+				st.setString(4, sbranch);
+				st.setString(5, syear);
+				st.setBinaryStream(6, (InputStream)sphoto, (long)f.length());
 				
 				int x = st.executeUpdate();
 				if(x > 0){
@@ -133,7 +145,9 @@ class Student extends JFrame implements ActionListener{
 		if(e.getSource() == reset_stud){
 			//JOptionPane.showMessageDialog(this, "Reseting Student Data!");
 			name_text.setText("");
+			email_text.setText("");
 			grno_text.setText("");
+			image_label.setText("");
 		}
 		
 		if(e.getSource() == insert_photo){

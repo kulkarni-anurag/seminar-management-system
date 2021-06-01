@@ -7,8 +7,8 @@ import java.sql.*;
 
 class StudentFind extends JFrame implements ActionListener{
 	Font head,comfont;
-	JLabel header, name_label, grno_label, branch_label, year_label, image_label;
-	JTextField name_text, grno_text;
+	JLabel header, name_label, email_label, grno_label, branch_label, year_label, image_label;
+	JTextField name_text, email_text, grno_text;
 	JComboBox<String> branch_select, year_select;
 	JButton search_student, update_stud, reset_stud, insert_photo;
 	FileDialog fd;
@@ -24,6 +24,8 @@ class StudentFind extends JFrame implements ActionListener{
 			System.out.println(error5);
 		}
 		
+		setLayout(null);
+		
 		head = new Font("Times New Roman", Font.BOLD, 30);
 		comfont = new Font("Times New Roman", Font.BOLD, 18);		
 		header = new JLabel("Student Details");
@@ -31,6 +33,9 @@ class StudentFind extends JFrame implements ActionListener{
 		
 		name_label = new JLabel("Name of Student:");
 		name_text = new JTextField(20);
+		
+		email_label = new JLabel("Student Email:");
+		email_text = new JTextField(20);
 		
 		grno_label = new JLabel("Gr. No. of Student:");
 		grno_text = new JTextField(20);
@@ -55,25 +60,29 @@ class StudentFind extends JFrame implements ActionListener{
 		header.setBounds(220,8,300,100);   
 		name_label.setFont(comfont);
 		name_text.setFont(comfont);
-		name_label.setBounds(10,80,300,50);
-		name_text.setBounds(10,120,300,40);
+		name_label.setBounds(10,170,300,40);
+		name_text.setBounds(10,210,300,40);
 		grno_label.setFont(comfont);
 		grno_text.setFont(comfont);		
-		grno_label.setBounds(10,170,300,40);
-		grno_text.setBounds(10,210,300,40);
+		grno_label.setBounds(10,80,300,50);
+		grno_text.setBounds(10,120,300,40);
+		email_label.setBounds(10,260,300,40);
+		email_text.setBounds(10,300,300,40);
+		email_label.setFont(comfont);
+		email_text.setFont(comfont);
 		branch_label.setFont(comfont);
 		branch_select.setFont(comfont);
 		year_label.setFont(comfont);
 		year_select.setFont(comfont);
-		branch_label.setBounds(10,260,300,40);
-		branch_select.setBounds(10,300,300,40);
-		year_label.setBounds(10,360,300,40);
-		year_select.setBounds(10,400,300,40);
+		branch_label.setBounds(10,360,300,40);
+		branch_select.setBounds(10,400,300,40);
+		year_label.setBounds(10,460,300,40);
+		year_select.setBounds(10,500,300,40);
 		
-		search_student.setBounds(10,560,170,40);
-		reset_stud.setBounds(190,560,150,40);				
-		insert_photo.setBounds(350,560,150,40);
-		update_stud.setBounds(510,560,170,40);
+		search_student.setBounds(10,570,170,40);
+		reset_stud.setBounds(190,570,150,40);				
+		insert_photo.setBounds(350,570,150,40);
+		update_stud.setBounds(510,570,170,40);
 		search_student.setFont(comfont);
 		reset_stud.setFont(comfont);
 		update_stud.setFont(comfont);
@@ -88,6 +97,9 @@ class StudentFind extends JFrame implements ActionListener{
 		
 		add(name_label);
 		add(name_text);
+		
+		add(email_label);
+		add(email_text);
 		
 		add(branch_label);
 		add(branch_select);	
@@ -109,10 +121,9 @@ class StudentFind extends JFrame implements ActionListener{
 		
 		add(image_label);
 		
-		setLayout(null);
 		setTitle("Student Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(900,700);
+		setSize(710,700);
 		setVisible(true);
 	}
 	
@@ -134,21 +145,22 @@ class StudentFind extends JFrame implements ActionListener{
 					
 					grno_text.setText(st7.getString(1));
 					name_text.setText(st7.getString(2));
-					String sbranchs = st7.getString(3);
+					email_text.setText(st7.getString(3));
+					String sbranchs = st7.getString(4);
 					for(int m=0; m < branch_select.getItemCount(); m++){
 						if(sbranchs.equals(branch_select.getItemAt(m))){
 							branch_select.setSelectedIndex(m);
 							break;
 						}
 					}
-					String syears = st7.getString(4);
+					String syears = st7.getString(5);
 					for(int n=0; n < year_select.getItemCount(); n++){
 						if(syears.equals(year_select.getItemAt(n))){
 							year_select.setSelectedIndex(n);
 							break;
 						}
 					}
-					Blob b = st7.getBlob(5);
+					Blob b = st7.getBlob(6);
 					ImageIcon i = new ImageIcon(b.getBytes(1,(int)b.length()));
 					image_label.setIcon(i);
 					
@@ -167,18 +179,20 @@ class StudentFind extends JFrame implements ActionListener{
 		if(e.getSource() == update_stud){
 			try{
 				String sname = name_text.getText();
+				String semail = email_text.getText();
 				String sgrno = grno_text.getText();
 				int grno = Integer.parseInt(sgrno);
 				String sbranch = (String)branch_select.getSelectedItem();
 				String syear = (String)year_select.getSelectedItem();
 				FileInputStream sphoto = new FileInputStream(f);
 				
-				PreparedStatement st = conn.prepareStatement("UPDATE student SET sname = ?, sbranch = ?, syear =? , sphoto = ? WHERE gr_no = ?");
+				PreparedStatement st = conn.prepareStatement("UPDATE student SET sname = ?, semail = ?, sbranch = ?, syear =? , sphoto = ? WHERE gr_no = ?");
 				st.setString(1, sname);
-				st.setString(2, sbranch);
-				st.setString(3, syear);
-				st.setBinaryStream(4, (InputStream)sphoto, (long)f.length());
-				st.setInt(5, grno);
+				st.setString(2, semail);
+				st.setString(3, sbranch);
+				st.setString(4, syear);
+				st.setBinaryStream(5, (InputStream)sphoto, (long)f.length());
+				st.setInt(6, grno);
 				
 				int x = st.executeUpdate();
 				if(x > 0){
@@ -193,6 +207,7 @@ class StudentFind extends JFrame implements ActionListener{
 		if(e.getSource() == reset_stud){
 			//JOptionPane.showMessageDialog(this, "Reseting Student Data!");
 			name_text.setText("");
+			email_text.setText("");
 			grno_text.setText("");
 			image_label.setText("");
 		}

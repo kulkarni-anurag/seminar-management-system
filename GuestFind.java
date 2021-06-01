@@ -8,8 +8,8 @@ import java.awt.event.*;
 class GuestFind extends JFrame implements ActionListener{
 	
 	Font thead,comfont;
-	JLabel head, gid_label1, gid_label2, gname_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
-	JTextField gname_text, gexpert_text, gcompany_text;
+	JLabel head, gname_label, gemail_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
+	JTextField gname_text, gemail_text, gexpert_text, gcompany_text;
 	JComboBox<String> event_combo;
 	JRadioButton male, female;
 	JButton search_guest, update_guest, reset, insert_photo;
@@ -48,17 +48,18 @@ class GuestFind extends JFrame implements ActionListener{
 		} catch(Exception error1){
 			JOptionPane.showMessageDialog(this,"Error: "+error1);
 		}
+		setLayout(null);
 		
 		thead = new Font("Times New Roman", Font.BOLD, 30);
 		comfont = new Font("Times New Roman", Font.BOLD, 18);	
 		head = new JLabel("Guest's Details");
 		head.setFont(thead);
 		
-		gid_label1 = new JLabel("Guest's Id:");
-		gid_label2 = new JLabel();
-		
 		gname_label = new JLabel("Guest's Name:");
 		gname_text = new JTextField(20);
+		
+		gemail_label = new JLabel("Guest's Email:");
+		gemail_text = new JTextField(20);
 		
 		ggender_label = new JLabel("Guest's Gender:");
 		male = new JRadioButton("Male");
@@ -84,40 +85,50 @@ class GuestFind extends JFrame implements ActionListener{
 		
 		image_label = new JLabel();
 	
-		head.setBounds(220,8,300,100);   
+		head.setBounds(220,8,300,100);
+		gemail_label.setFont(comfont);
+		gemail_text.setFont(comfont);
+		gemail_label.setBounds(10,80,300,50);
+		gemail_text.setBounds(10,120,300,40);
 		gname_label.setFont(comfont);
 		gname_text.setFont(comfont);
-		gname_label.setBounds(10,80,300,50);
-		gname_text.setBounds(10,120,300,40);
+		gname_label.setBounds(10,170,300,50);
+		gname_text.setBounds(10,210,300,40);
 		male.setFont(comfont);
 		female.setFont(comfont);		
 		ggender_label.setFont(comfont);
-		ggender_label.setBounds(10,170,300,40);
-		male.setBounds(10,210,100,40);
-		female.setBounds(120,210,200,40);
+		ggender_label.setBounds(10,260,300,40);
+		male.setBounds(10,290,100,40);
+		female.setBounds(120,290,200,40);
 		gexpert_label.setFont(comfont);
 		gexpert_text.setFont(comfont);		
-		gexpert_label.setBounds(10,260,300,40);
-		gexpert_text.setBounds(10,300,300,40);
+		gexpert_label.setBounds(10,340,300,40);
+		gexpert_text.setBounds(10,380,300,40);
 		gcompany_label.setFont(comfont);
 		gcompany_text.setFont(comfont);		
-		gcompany_label.setBounds(10,350,300,40);
-		gcompany_text.setBounds(10,390,300,40);
+		gcompany_label.setBounds(10,430,300,40);
+		gcompany_text.setBounds(10,470,300,40);
 		gevent_label.setFont(comfont);
 		event_combo.setFont(comfont);		
-		gevent_label.setBounds(10,450,100,40);
-		event_combo.setBounds(10,490,300,40);
-		search_guest.setBounds(10,560,150,40);
-		reset.setBounds(170,560,150,40);				
-		update_guest.setBounds(330,560,150,40);
+		gevent_label.setBounds(10,520,100,40);
+		event_combo.setBounds(10,560,300,40);
+		search_guest.setBounds(10,630,150,40);
+		reset.setBounds(170,630,150,40);				
+		update_guest.setBounds(330,630,150,40);
 		search_guest.setFont(comfont);
 		reset.setFont(comfont);
 		update_guest.setFont(comfont);
-		image_label.setBounds(400,100,250,250);	
+		insert_photo = new JButton("Insert Photo");
+		insert_photo.setFont(comfont);
+		insert_photo.setBounds(490,630,140,40);
+		image_label.setBounds(400,100,250,250);
+		
+		add(image_label);
+		
 		add(head);
-	   
-		add(gid_label1);
-		add(gid_label2);
+		
+		add(gemail_label);
+		add(gemail_text);
 	   
 		add(gname_label);
 		add(gname_text);
@@ -152,11 +163,9 @@ class GuestFind extends JFrame implements ActionListener{
 		add(insert_photo);
 		insert_photo.addActionListener(this);
 		
-		add(image_label);
-		
 		setVisible(true);
-		setSize(700,650);
-		setLayout(null);
+		setSize(700,750);
+		
 		setTitle("Guest Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -165,18 +174,18 @@ class GuestFind extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent event){
 		
 		if(event.getSource() == search_guest){
-			String gnames = gname_text.getText();
+			String gemails = gemail_text.getText();
 			
 			try{
-				PreparedStatement pst6 = conn.prepareStatement("SELECT * FROM guest WHERE gname = ?");
-				pst6.setString(1, gnames);
+				PreparedStatement pst6 = conn.prepareStatement("SELECT * FROM guest WHERE gemail = ?");
+				pst6.setString(1, gemails);
 				
 				ResultSet st6 = pst6.executeQuery();
 				
 				if(st6.next()){
-					gid_label2.setText(st6.getString(1));
 					gname_text.setText(st6.getString(2));
-					String tgender = st6.getString(3);
+					gemail_text.setText(st6.getString(3));
+					String tgender = st6.getString(4);
 					if(tgender.equals("Male")){
 						male.setSelected(true);
 						female.setSelected(false);
@@ -184,10 +193,19 @@ class GuestFind extends JFrame implements ActionListener{
 						female.setSelected(true);
 						male.setSelected(false);
 					}
-					gexpert_text.setText(st6.getString(4));
-					gcompany_text.setText(st6.getString(5));
-					event_combo.setSelectedIndex(st6.getInt(6) - 1);
-					Blob b = st6.getBlob(7);
+					gexpert_text.setText(st6.getString(5));
+					gcompany_text.setText(st6.getString(6));
+					
+					PreparedStatement pst3 = conn.prepareStatement("SELECT * FROM event WHERE eid = ?");
+					pst3.setInt(1, st6.getInt(7));
+					
+					ResultSet st3 = pst3.executeQuery();
+					
+					if(st3.next()){
+						event_combo.setSelectedItem(st3.getString(2));
+					}
+					
+					Blob b = st6.getBlob(8);
 					ImageIcon i = new ImageIcon(b.getBytes(1,(int)b.length()));
 					image_label.setIcon(i);
 					
@@ -205,9 +223,8 @@ class GuestFind extends JFrame implements ActionListener{
 		
 		if(event.getSource() == update_guest){
 			//JOptionPane.showMessageDialog(this,"Add Guest Clicked!");
-			String gids = gid_label2.getText();
-			int gidi = Integer.parseInt(gids);
 			String gname = gname_text.getText();
+			String gemail = gemail_text.getText();
 			String gexpert = gexpert_text.getText();
 			String gcompany = gcompany_text.getText();
 			String gevent = (String)event_combo.getSelectedItem();
@@ -231,14 +248,14 @@ class GuestFind extends JFrame implements ActionListener{
 					geventid = rs2.getInt(1);
 				}
 				
-				PreparedStatement pst1 = conn.prepareStatement("UPDATE guest SET gname = ?, ggender = ?, gexpert = ?, gcompany = ?, event = ?, gphoto = ? WHERE gid = ?");
+				PreparedStatement pst1 = conn.prepareStatement("UPDATE guest SET gname = ?, ggender = ?, gexpert = ?, gcompany = ?, event = ?, gphoto = ? WHERE gemail = ?");
 				pst1.setString(1, gname);
 				pst1.setString(2, gen);
 				pst1.setString(3, gexpert);
 				pst1.setString(4, gcompany);
 				pst1.setInt(5, geventid);
 				pst1.setBinaryStream(6, (InputStream)gphoto, (long)f.length());
-				pst1.setInt(7, gidi);
+				pst1.setString(7, gemail);
 				
 				int exe = pst1.executeUpdate();
 				if(exe > 0){
@@ -254,6 +271,7 @@ class GuestFind extends JFrame implements ActionListener{
 		
 		if(event.getSource() == reset){
 			gname_text.setText("");
+			gemail_text.setText("");
 			gexpert_text.setText("");
 			gcompany_text.setText("");
 		}

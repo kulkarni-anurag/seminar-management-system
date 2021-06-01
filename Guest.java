@@ -8,8 +8,8 @@ import java.awt.event.*;
 class Guest extends JFrame implements ActionListener{
 	
 	Font thead,comfont;
-	JLabel head, gname_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
-	JTextField gname_text, gexpert_text, gcompany_text;
+	JLabel head, gname_label, gemail_label, ggender_label, gexpert_label, gcompany_label, gevent_label, image_label;
+	JTextField gname_text, gemail_text, gexpert_text, gcompany_text;
 	JComboBox<String> event_combo;
 	JRadioButton male, female;
 	JButton add_guest, reset, insert_photo;
@@ -49,6 +49,7 @@ class Guest extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this,"Error: "+error1);
 		}
 		setLayout(null);
+		
 		thead = new Font("Times New Roman", Font.BOLD, 30);
 		comfont = new Font("Times New Roman", Font.BOLD, 18);
 		head = new JLabel("Guest's Details");
@@ -61,6 +62,13 @@ class Guest extends JFrame implements ActionListener{
 		gname_text.setFont(comfont);
 		gname_label.setBounds(10,80,300,50);
 		gname_text.setBounds(10,120,300,40);
+		
+		gemail_label = new JLabel("Enter Guest's Email:");
+		gemail_text = new JTextField(20);
+		gemail_label.setFont(comfont);
+		gemail_text.setFont(comfont);
+		gemail_label.setBounds(10,170,300,40);
+		gemail_text.setBounds(10,210,300,40);
 
 		ggender_label = new JLabel("Select Guest's Gender:");
 		male = new JRadioButton("Male");
@@ -68,46 +76,50 @@ class Guest extends JFrame implements ActionListener{
 		ggender_label.setFont(comfont);
 		male.setFont(comfont);
 		female.setFont(comfont);		
-		ggender_label.setBounds(10,170,300,40);
-		male.setBounds(10,210,100,40);
-		female.setBounds(120,210,200,40);
+		ggender_label.setBounds(10,260,300,40);
+		male.setBounds(10,300,100,40);
+		female.setBounds(120,300,200,40);
 
 		gexpert_label = new JLabel("Enter Guest's Expertise:");
 		gexpert_text = new JTextField(20);
 		gexpert_label.setFont(comfont);
 		gexpert_text.setFont(comfont);		
-		gexpert_label.setBounds(10,260,300,40);
-		gexpert_text.setBounds(10,300,300,40);
+		gexpert_label.setBounds(10,350,300,40);
+		gexpert_text.setBounds(10,390,300,40);
 
 		gcompany_label = new JLabel("Enter Guest's Company:");
 		gcompany_text = new JTextField(20);
 		gcompany_label.setFont(comfont);
 		gcompany_text.setFont(comfont);		
-		gcompany_label.setBounds(10,350,300,40);
-		gcompany_text.setBounds(10,390,300,40);
+		gcompany_label.setBounds(10,450,300,40);
+		gcompany_text.setBounds(10,490,300,40);
 		
 		gevent_label = new JLabel("Select Event:");
 		event_combo = new JComboBox<>(events);
 		gevent_label.setFont(comfont);
 		event_combo.setFont(comfont);		
-		gevent_label.setBounds(10,450,100,40);
-		event_combo.setBounds(10,490,300,40);
+		gevent_label.setBounds(10,550,100,40);
+		event_combo.setBounds(10,590,300,40);
 
 		add_guest = new JButton("Add Guest");
-		add_guest.setBounds(10,560,120,40);		
+		add_guest.setBounds(10,650,120,40);		
 		reset = new JButton("Reset Data");
-		reset.setBounds(140,560,120,40);		
+		reset.setBounds(140,650,120,40);		
 		insert_photo = new JButton("Insert Photo");
-		insert_photo.setBounds(270,560,140,40);
+		insert_photo.setBounds(270,650,140,40);
 		add_guest.setFont(comfont);
 		reset.setFont(comfont);
 		insert_photo.setFont(comfont);		
 		image_label = new JLabel();
+		image_label.setBounds(400,100,250,250);
 	   
 		add(head);
 	   
 		add(gname_label);
 		add(gname_text);
+		
+		add(gemail_label);
+		add(gemail_text);
 	   
 		add(ggender_label);
 	   
@@ -134,12 +146,11 @@ class Guest extends JFrame implements ActionListener{
 		reset.addActionListener(this);
 		
 		add(insert_photo);
-		insert_photo.addActionListener(this);
-		image_label.setBounds(400,100,250,250);	
+		insert_photo.addActionListener(this);	
 		add(image_label);
 		
 		setVisible(true);
-		setSize(700,700);
+		setSize(700,750);
 
 		setTitle("Guest Details");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,6 +161,7 @@ class Guest extends JFrame implements ActionListener{
 		if(event.getSource() == add_guest){
 			//JOptionPane.showMessageDialog(this,"Add Guest Clicked!");
 			String gname = gname_text.getText();
+			String gemail = gemail_text.getText();
 			String gexpert = gexpert_text.getText();
 			String gcompany = gcompany_text.getText();
 			String gevent = (String)event_combo.getSelectedItem();
@@ -173,13 +185,14 @@ class Guest extends JFrame implements ActionListener{
 					geventid = rs2.getInt(1);
 				}
 				
-				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO guest(gname, ggender, gexpert, gcompany, event, gphoto) VALUES (?,?,?,?,?,?)");
+				PreparedStatement pst1 = conn.prepareStatement("INSERT INTO guest(gname, gemail, ggender, gexpert, gcompany, event, gphoto) VALUES (?,?,?,?,?,?,?)");
 				pst1.setString(1, gname);
-				pst1.setString(2, gen);
-				pst1.setString(3, gexpert);
-				pst1.setString(4, gcompany);
-				pst1.setInt(5, geventid);
-				pst1.setBinaryStream(6, (InputStream)gphoto, (long)f.length());
+				pst1.setString(2, gemail);
+				pst1.setString(3, gen);
+				pst1.setString(4, gexpert);
+				pst1.setString(5, gcompany);
+				pst1.setInt(6, geventid);
+				pst1.setBinaryStream(7, (InputStream)gphoto, (long)f.length());
 				
 				int exe = pst1.executeUpdate();
 				if(exe > 0){
@@ -195,6 +208,7 @@ class Guest extends JFrame implements ActionListener{
 		
 		if(event.getSource() == reset){
 			gname_text.setText("");
+			gemail_text.setText("");
 			gexpert_text.setText("");
 			gcompany_text.setText("");
 		}
