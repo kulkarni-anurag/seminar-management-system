@@ -120,7 +120,7 @@ class Event extends JFrame implements ActionListener{
 				int dur = Integer.parseInt(eduration);
 				FileInputStream eposter = new FileInputStream(f);
 				
-				Date dt=Date.valueOf(edate);
+				Date dt = Date.valueOf(edate);
 				//System.out.println(dt);
 				PreparedStatement st = conn.prepareStatement("INSERT INTO event(ename, evenue, edate, eduration, eposter) VALUES (?,?,?,?, ?)");
 				st.setString(1,ename);

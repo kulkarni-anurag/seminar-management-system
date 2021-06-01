@@ -50,7 +50,7 @@ class Attendance extends JFrame implements ActionListener, ItemListener{
 			
 			Statement st3 = conn.createStatement();
 			
-			ResultSet rs3 = st3.executeQuery("SELECT r.grno FROM registration r, student s, event e WHERE r.grno = s.gr_no AND s.sbranch = 'Computer' AND s.syear = 'FY' AND e.eid = '"+ aeventid +"'");
+			ResultSet rs3 = st3.executeQuery("SELECT r.grno FROM registration r, student s, event e WHERE r.grno = s.gr_no AND s.sbranch = 'Computer' AND s.syear = 'FY' AND r.event = '"+ aeventid +"' AND e.eid = '"+ aeventid +"'");
 			
 			ArrayList<String> addNewGr = new ArrayList<String>();
 			
